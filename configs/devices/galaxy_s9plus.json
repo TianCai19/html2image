@@ -1,0 +1,12 @@
+{
+    "name": "Galaxy S9+",
+    "user_agent": "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.25 Mobile Safari/537.36",
+    "viewport": {
+        "width": 320,
+        "height": 658
+    },
+    "device_scale_factor": 4.5,
+    "is_mobile": true,
+    "has_touch": true,
+    "default_browser_type": "chromium"
+}

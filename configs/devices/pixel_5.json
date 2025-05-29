@@ -1,0 +1,12 @@
+{
+    "name": "Pixel 5",
+    "user_agent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.25 Mobile Safari/537.36",
+    "viewport": {
+        "width": 393,
+        "height": 727
+    },
+    "device_scale_factor": 2.75,
+    "is_mobile": true,
+    "has_touch": true,
+    "default_browser_type": "chromium"
+}

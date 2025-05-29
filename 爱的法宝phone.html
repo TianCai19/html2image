@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>走出心灵的阴霾 (手机版 - 详细内容)</title>
+    <style>
+        /* 基本重置和全局样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            overflow: hidden; /* 隐藏PC端的滚动条，因为我们用snap容器 */
+            background-color: #f0f0f0; /* 背景色，以防页面间有缝隙 */
+        }
+
+        /* 滚动捕捉容器 */
+        .page-container {
+            height: 100vh; /* 视口高度 */
+            overflow-y: scroll; /* 允许垂直滚动 */
+            scroll-snap-type: y mandatory; /* 强制Y轴捕捉 */
+            -webkit-overflow-scrolling: touch; /* iOS上的平滑滚动 */
+        }
+
+        /* 单个页面/幻灯片 */
+        .slide {
+            height: 100vh; /* 占据整个视口高度 */
+            width: 100%;   /* 占据整个视口宽度 */
+            scroll-snap-align: start; /* 每一页的顶部与视口顶部对齐 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 内容垂直居中 */
+            align-items: center;   /* 内容水平居中 */
+            text-align: center;
+            padding: 20px 25px; /* 上下边距减小一点，左右不变 */
+            box-sizing: border-box; /* padding不影响总高度/宽度 */
+            position: relative; /* 为了页内绝对定位元素（如页码） */
+            color: #333; /* 默认文字颜色 */
+        }
+
+        .slide h1 {
+            font-size: 1.8em; /* 调整为适合手机的标题大小 */
+            margin-bottom: 10px;
+        }
+
+        .slide h2 {
+            font-size: 1.4em;
+            margin-bottom: 15px; /* 减少H2和下面内容的间距 */
+            font-weight: normal;
+        }
+        
+        .slide h3 {
+            font-size: 1.3em; /* 法宝标题可以大一点 */
+            color: #4A90E2; /* 突出法宝标题 */
+            margin-top: 10px; /* 图标和标题间距 */
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            font-size: 0.9em; /* 稍微减小一点字号以容纳更多文字 */
+            line-height: 1.65; /* 调整行高 */
+            max-width: 95%; /* 避免文字太宽 */
+            margin-bottom: 10px; /* 段落间距 */
+        }
+        .slide p.quote {
+            font-style: italic;
+            color: #555;
+            font-size: 0.85em;
+            margin-top: 15px;
+        }
+
+        .slide img.profile-pic {
+            width: 90px; /* 调整图片大小 */
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 3px solid #4A90E2;
+        }
+
+        .slide .icon {
+            font-size: 2.8em; /* 调整图标大小 */
+            margin-bottom: 10px;
+            color: #FFA726;
+        }
+
+        .cta-button-slide {
+            background-color: #FFA726;
+            color: white;
+            padding: 10px 20px; /* 按钮可以小一点 */
+            text-decoration: none;
+            border-radius: 25px; /* 更圆润的按钮 */
+            font-size: 0.95em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+        }
+        .cta-button-slide:hover, .cta-button-slide:active {
+            background-color: #FB8C00;
+        }
+        
+        /* 向上/向下箭头提示 */
+        .scroll-hint {
+            position: absolute;
+            bottom: 15px; 
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.3em; 
+            color: rgba(0,0,0,0.3);
+            animation: bounce 2s infinite;
+        }
+        .scroll-hint.up {
+            top: 15px;
+            bottom: auto;
+            transform: translateX(-50%) rotate(180deg);
+        }
+
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-8px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-4px);
+            }
+        }
+
+
+        /* 不同页面的特定背景和文字颜色 */
+        #slide-hero {
+            background: linear-gradient(rgba(74, 144, 226, 0.8), rgba(74, 144, 226, 0.9)), url('https://via.placeholder.com/400x800?text=Mobile+Sunrise') no-repeat center center/cover;
+            color: white;
+        }
+        #slide-hero .cta-button-slide {
+             background-color: white; color: #4A90E2;
+        }
+
+        #slide-about-prof { background-color: #e9f2fc; }
+        #slide-reality-depression { background-color: #f0e8f7; }
+        #slide-reality-depression h2 { color: #6a1b9a; } /* 深一点的紫色标题 */
+        #slide-reality-depression p { color: #4c3260; }
+
+        #slide-treasure-love { background-color: #fff0f5; }
+        #slide-treasure-love .icon { color: #ff69b4; } 
+
+        #slide-treasure-action { background-color: #f0fff0; } 
+        #slide-treasure-action .icon { color: #32cd32; } 
+
+        #slide-treasure-learning { background-color: #fffacd; } 
+        #slide-treasure-learning .icon { color: #ffd700; } 
+
+        #slide-conclusion {
+            background: linear-gradient(rgba(210, 245, 225, 0.8), rgba(210, 245, 225, 0.9));
+            color: #1e4620;
+        }
+        #slide-conclusion .icon { font-size: 2.5em; color: #28a745;}
+
+    </style>
+</head>
+<body>
+
+    <div class="page-container" id="pageContainer">
+
+        <section id="slide-hero" class="slide">
+            <h1>走出心灵的阴霾，重拾生命色彩</h1>
+            <h2>听清华大学彭凯平教授分享<br>战胜人生至暗时刻的三大智慧法宝</h2>
+            <button class="cta-button-slide" onclick="scrollToNext()">了解更多 👇</button>
+            <div class="scroll-hint">▽</div>
+        </section>
+
+        <section id="slide-about-prof" class="slide">
+            <div class="scroll-hint up">△</div>
+            <h2>👨‍🏫 分享者</h2>
+            <img src="https://via.placeholder.com/100?text=Prof.Peng" alt="彭凯平教授" class="profile-pic"> <h3>彭凯平 教授</h3>
+            <p>清华大学社会科学学院前任院长，<br>中国积极心理学发起人。</p>
+            <p class="quote"><em>“用积极心理学，点亮更多人的生命。”</em></p>
+            <div class="scroll-hint">▽</div>
+        </section>
+
+        <section id="slide-reality-depression" class="slide">
+            <div class="scroll-hint up">△</div>
+            <h2>😔 抑郁的真实感受</h2>
+            <p>“彭凯平教授在咨询中发现，许多成功人士都曾经历难以言喻的抑郁时期，他们称之为‘人生最黑暗的时刻’。”</p>
+            <p>“在那段时间，‘起床看外面的世界都没有颜色’——这并非文艺修辞，而是抑郁者真实的感受。生活仿佛被无尽的黑暗所吞噬。”</p>
+            <p>如果您或您身边的人正在经历类似困境，请知道，您并不孤单，并且有路可循。</p>
+            <div class="scroll-hint">▽</div>
+        </section>
+
+        <section id="slide-treasure-love" class="slide">
+            <div class="scroll-hint up">△</div>
+            <div class="icon">💖</div>
+            <h3>法宝一：爱的力量</h3>
+            <p>人在活得最艰难、最痛苦的时候，一定要有爱的感受。这里的爱不只是简单的男女之爱，还包括亲人、同事等给予的信任、支持和关怀，家人的爱更是重要力量。</p>
+            <p>当觉得日子过不下去、心情阴暗时，一定要去寻求爱的支持，包括自己的父母、好朋友以及自己，千万不要把自己孤独、孤立、关起来。</p>
+            <div class="scroll-hint">▽</div>
+        </section>
+
+        <section id="slide-treasure-action" class="slide">
+            <div class="scroll-hint up">△</div>
+            <div class="icon">🚶</div>
+            <h3>法宝二：行动的习惯</h3>
+            <p>心情不好时，一定要下决心给自己找事做，做什么并不重要，但千万不要“躺平”，不要躲在家里、宅在屋里，一定要走出家门、爬出被窝，迈出第一步。</p>
+            <p>只要行动起来，就总是有希望、有可能。分享者自己在特别难的时候，也是到处找工作。</p>
+            <div class="scroll-hint">▽</div>
+        </section>
+
+        <section id="slide-treasure-learning" class="slide">
+            <div class="scroll-hint up">△</div>
+            <div class="icon">📚</div>
+            <h3>法宝三：不断学习成长</h3>
+            <p>人要给自己立一个目标，即自我效能感，给自己“我能够做成”的心理暗示。比如面对一份完全不会的工作，面试时也可以说自己会，因为相信自己花时间去学习，找愿意帮助自己的同事请教，就能够掌握。</p>
+            <p>不要被大学灌输的专业训练所束缚，大学学的是终身学习的技能，这些技能可以帮助我们学到很多新知识。分享者自己在美国读社会心理学，现在搞积极心理学，也是不断换行、换专业。</p>
+            <div class="scroll-hint">▽</div>
+        </section>
+
+        <section id="slide-conclusion" class="slide">
+            <div class="scroll-hint up">△</div>
+            <div class="icon">🌟</div>
+            <h2>总结：战胜抑郁的三大法宝</h2>
+            <p>这就是战胜抑郁时刻的三大法宝——爱的力量、行动的力量、学习的力量。</p>
+            <p>听起来抽象，但用起来会发现很有意义和价值，很多人就是靠着这三大法宝走出了人生中最黑暗的时期。</p>
+            <button class="cta-button-slide" onclick="scrollToTop()">回到开头</button>
+        </section>
+
+    </div>
+
+    <script>
+        const pageContainer = document.getElementById('pageContainer');
+        // const slides = document.querySelectorAll('.slide'); // Not strictly needed for current JS
+
+        function scrollToNext() {
+            const currentScrollTop = pageContainer.scrollTop;
+            const viewportHeight = window.innerHeight; // Use window.innerHeight for accurate viewport
+            const nextScrollTop = currentScrollTop + viewportHeight;
+            const maxScrollTop = pageContainer.scrollHeight - viewportHeight;
+
+            pageContainer.scrollTo({
+                top: Math.min(nextScrollTop, maxScrollTop), // Ensure not to overscroll
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToTop() {
+            pageContainer.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>

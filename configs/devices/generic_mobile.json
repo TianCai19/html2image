@@ -1,0 +1,11 @@
+{
+    "name": "Generic Mobile (390x844)",
+    "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
+    "viewport": {
+        "width": 390,
+        "height": 844
+    },
+    "device_scale_factor": 2,
+    "is_mobile": true,
+    "has_touch": true
+}
