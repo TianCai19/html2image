@@ -13,7 +13,9 @@ pip-wheel-metadata/
 *.egg
 
 # Output directory
-screenshots/
+# Ignore everything in screenshots initially
+screenshots/*
+# But un-ignore these specific files
 !screenshots/iphone_x_slide-hero.png
 !screenshots/xiaohongshu_3_4_1080p_slide-hero.png
 
