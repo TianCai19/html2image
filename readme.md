@@ -95,6 +95,15 @@ project_root/
         ```bash
         python screenshot_tool.py 爱的法宝phone.html --device xiaohongshu_3_4_1080p --output-dir ./my_xhs_shots
         ```
+
+    **示例截图:**
+
+    iPhone X 示例:
+    ![iPhone X Screenshot](./screenshots/iphone_x_slide-hero.png)
+
+    小红书 3:4 示例:
+    ![Xiaohongshu 3:4 Screenshot](./screenshots/xiaohongshu_3_4_1080p_slide-hero.png)
+
 4.  **查看结果:** 脚本执行完毕后，截图将保存在指定的输出目录中。截图文件名将包含设备名称和页面ID/索引 (例如 `iphone_x_slide-hero.png`)。
 
 ## 5. 当前功能 (Current Features)
